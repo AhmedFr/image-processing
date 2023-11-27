@@ -1,44 +1,50 @@
 import cv2
-import tkinter as tk
-from tkinter import filedialog
-from tkinter import messagebox
 from PIL import Image, ImageTk
+import tkinter as tk
+from tkinter import filedialog, messagebox
+import os
+
+os.environ['TK_SILENCE_DEPRECATION'] = '1'
+
 
 class ImageDifferenceGUI:
     def __init__(self, master):
         self.master = master
         self.master.title("Image Difference Finder")
+        self.master.geometry("1400x1000")
 
         # Initialize image paths
         self.image1_path = None
         self.image2_path = None
 
+        # Create description label
+        description = "This program allows you to select two images and find the differences between them."
+        self.description_label = tk.Label(master, text=description)
+        self.description_label.grid(row=0, column=0, columnspan=3)
+
+
         # Create widgets
         self.label1 = tk.Label(master, text="Select Image 1:")
-        self.label1.pack()
-
+        self.label1.grid(row=1, column=0)
         self.button1 = tk.Button(master, text="Browse", command=self.browse_image1)
-        self.button1.pack()
+        self.button1.grid(row=1, column=1)
 
         self.label2 = tk.Label(master, text="Select Image 2:")
-        self.label2.pack()
-
+        self.label2.grid(row=2, column=0)
         self.button2 = tk.Button(master, text="Browse", command=self.browse_image2)
-        self.button2.pack()
+        self.button2.grid(row=2, column=1)
 
         self.run_button = tk.Button(master, text="Run", command=self.find_differences)
-        self.run_button.pack()
-
+        self.run_button.grid(row=3, column=2)
         # Add labels to display the selected image names
         self.image1_label = tk.Label(master, text="")
-        self.image1_label.pack()
+        self.image1_label.grid(row=3, column=0)
 
         self.image2_label = tk.Label(master, text="")
-        self.image2_label.pack()
-
+        self.image2_label.grid(row=3, column=1)
         # Add a label to display the result image
         self.result_label = tk.Label(master)
-        self.result_label.pack()
+        self.result_label.grid(row=4, column=0, columnspan=2)
 
         # Initialize PhotoImage variables
         self.image1_tk = None
@@ -48,7 +54,7 @@ class ImageDifferenceGUI:
         #display example image
         self.example_image = ImageTk.PhotoImage(Image.open("example_image.jpg"))
         self.example_image_label = tk.Label(master, image=self.example_image, bg="blue")
-        self.example_image_label.pack()
+        self.example_image_label.grid(row=4, column=2)
 
     def browse_image1(self):
         file_path = filedialog.askopenfilename(title="Select Image 1", filetypes=[("Image files", "*.png *.jpg *.jpeg")])
